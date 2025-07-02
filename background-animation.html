@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animations</title>
+    <style>
+        :root {
+            --star1: 50px;
+            --star2: 30px;
+        }
+
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(hsl(300, 80%, 10%), black);
+        }
+
+        .star-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            margin: auto;
+
+            background-image: radial-gradient(hsl(239, 100%, 64%) 18px, transparent);
+            background-size: 32px 32px;
+            background-color: #47d3ff;
+            animation: 60s linear infinite alternate expand;
+        }
+
+        @keyframes expand {
+            from {
+                transform: scale(1.5, 1.5);
+            }
+
+            to {
+                transform: scale(1, 1);
+            }
+        }
+
+        .star {
+            position: relative;
+            inset: 0;
+            margin: auto;
+
+            background-color: hsl(300, 100%, 31%);
+
+        }
+
+        .star-end {
+            animation: 20s linear infinite normal star-end;
+        }
+
+        .star-blink {
+            animation: 2s ease-out infinite alternate-reverse star-blink;
+        }
+
+        .star-rotate {
+            animation: 4s linear infinite alternate-reverse star-rotate;
+
+        }
+
+        .star-container {
+            background-color: transparent;
+            filter: drop-shadow(5px 0 5px hsl(0, 0%, 5%));
+            position: absolute;
+            top: 0%;
+            left: 0%;
+
+        }
+
+        @keyframes star-end {
+            to {
+                transform: translate(100vw, 0);
+            }
+        }
+
+        @keyframes star-blink {
+            from {
+                transform: scale(1, 1);
+
+            }
+
+            to {
+                transform: scale(0.5, 0.5);
+            }
+        }
+
+        @keyframes star-rotate {
+            to {
+                transform: rotateY(0.4turn);
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="star-container">
+        <div class="star"></div>
+    </div> -->
+    <div class="star-container">
+        <div class="star"></div>
+    </div>
+    <button id="add" onclick="addstar()">add star</button>
+    <script>
+        let isBlink = 1;
+        setInterval(() => addstar(), 600);
+        function addstar() {
+            if (isBlink > 100) return;
+            let animClasses = ["star-end", "star-rotate"]
+            let container = document.createElement("div");
+            let star = document.createElement("div");
+            container.className = "star-container";
+            if (isBlink) { isBlink++; star.className = animClasses[isBlink % 2]; if (isBlink % 2) { container.style.left = (Math.random() * 100) + "%"; star.style.backgroundColor = "hsl(300, 100%, 17%)" } }
+            star.className += " star";
+            size = 2 + Math.random() * 10;
+            // console.log(size);
+            path = `M 0,${size / 2} A ${size / 2},${size / 2} 0,0,0 ${size / 2},0 A ${size / 2},${size / 2} 0,0,0 ${size},${size / 2} A ${size / 2},${size / 2} 0,0,0 ${size / 2},${size} A ${size / 2},${size / 2} 0,0,0 0,${size / 2} Z`;
+            star.style.width = size + "px";
+            star.style.height = size + "px";
+            container.style.top = (Math.random() * 100) + "%";
+            star.style.clipPath = `path("${path}")`
+
+            // console.log(container, star);
+            container.appendChild(star);
+            document.body.appendChild(container);
+        }
+    </script>
+</body>
+
+</html>
