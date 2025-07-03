@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Clip-Path Shadow Fix</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+
+        /* Outer wrapper for the clipped shape */
+        .pathdiv {
+            background-color: transparent;
+            /* Make wrapper background transparent */
+            position: relative;
+            height: 250px;
+            /* This determines the area for the shadow */
+            width: 250px;
+            border: 1px solid lightgray;
+            /* Just for visualization of the wrapper's bounds */
+
+            /* Apply drop-shadow to the wrapper */
+            filter: drop-shadow(-20px -20px 2px rgba(0, 0, 0, 0.7));
+            /* Stronger shadow for effect */
+        }
+
+        /* The inner div that will be clipped */
+        .mydiv {
+            height: 200px;
+            /* Make it fill the parent .pathdiv */
+            width: 200px;
+            /* Make it fill the parent .pathdiv */
+            position: absolute;
+            background-color: cyan;
+            /* The color of your clipped shape */
+            inset: 0;
+            margin: auto;
+            /* No margin on the inner element */
+            /* Position it to fill the parent */
+
+
+            /* Apply the clip-path to this inner element */
+            clip-path: path("M 0,50 A 50,50 0,0,0 50,0 L 202,0 L 202,202 L 0,202 L 0,50 Z");
+
+            /* Remove box-shadow and filter:drop-shadow from here.
+         They are now on the parent (.pathdiv). */
+            /* box-shadow: 10px 10px 0 10px black; */
+            /* filter: drop-shadow(20px 20px 8px black); */
+        }
+
+        /* Style for the second .mydiv containing SVGs */
+        .mydiv-svg-container {
+            height: 200px;
+            width: 200px;
+            background-color: transparent;
+            border: 1px solid gray;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            /* Include padding in width/height */
+        }
+
+        .mydiv-svg-container svg {
+            filter: drop-shadow(4px 4px 2px black);
+            /* Shadow on each SVG */
+            width: 80px;
+            /* Adjust size for visibility */
+            height: 80px;
+            /* SVGs often use 'currentColor' for stroke/fill by default in many icon sets.
+         We set the 'color' property on the parent, or fill/stroke on the SVG/path directly. */
+            stroke: blue;
+            /* Example: make the SVG stroke blue */
+            fill: none;
+            /* Make sure the fill is none if you only want stroke */
+        }
+
+        .circle {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            clip-path: circle(50%);
+
+            background-color: cyan;
+        }
+
+        .insetdiv {
+            height: 30px;
+            width: 30px;
+            background-color: black;
+            position: absolute;
+            inset: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pathdiv">
+        <div class="insetdiv"></div>
+    </div>
+    <h1>Clip-Path with Shadow Following Shape</h1>
+
+    <div class="pathdiv">
+        <div class="mydiv"></div>
+    </div>
+    <div class="pathdiv">
+        <div class="circle"></div>
+    </div>
+
+    <h2>SVGs with Drop Shadows</h2>
+    <div class="mydiv-svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gauge-icon lucide-gauge">
+            <path d="m12 14 4-4" />
+            <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-swords-icon lucide-swords">
+            <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" />
+            <line x1="13" x2="19" y1="19" y2="13" />
+            <line x1="16" x2="20" y1="16" y2="20" />
+            <line x1="19" x2="21" y1="21" y2="19" />
+            <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" />
+            <line x1="5" x2="9" y1="14" y2="18" />
+            <line x1="7" x2="4" y1="17" y2="20" />
+            <line x1="3" x2="5" y1="19" y2="21" />
+        </svg>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
